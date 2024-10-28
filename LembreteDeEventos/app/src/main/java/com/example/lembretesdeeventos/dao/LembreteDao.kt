@@ -1,6 +1,6 @@
 @Dao
 interface LembreteDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLembrete(lembrete: Lembrete)
 
     @Update
@@ -10,5 +10,5 @@ interface LembreteDao {
     suspend fun deleteLembrete(lembrete: Lembrete)
 
     @Query("SELECT * FROM lembretes")
-    suspend fun getAllLembretes(): List<Lembrete>
+    fun getAllLembretes(): Flow<List<Lembrete>>
 }

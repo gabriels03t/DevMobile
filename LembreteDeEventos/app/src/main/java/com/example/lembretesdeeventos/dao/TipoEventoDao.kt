@@ -1,14 +1,8 @@
 @Dao
 interface TipoEventoDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTipoEvento(tipoEvento: TipoEvento)
 
-    @Update
-    suspend fun updateTipoEvento(tipoEvento: TipoEvento)
-
-    @Delete
-    suspend fun deleteTipoEvento(tipoEvento: TipoEvento)
-
     @Query("SELECT * FROM tipos_evento")
-    suspend fun getAllTiposEvento(): List<TipoEvento>
+    fun getAllTiposEvento(): Flow<List<TipoEvento>>
 }

@@ -2,8 +2,5 @@
 data class TipoEvento(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nome: String,
-    val descricao: String
+    val descricao: String?
 )
-
-
-

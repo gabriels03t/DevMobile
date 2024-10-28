@@ -1,28 +1,22 @@
 class LembreteViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: LembreteRepository
+    val allLembretes: LiveData<List<Lembrete>>
 
-    private val lembreteDao = AppDatabase.getDatabase(application).lembreteDao()
-    private val tipoEventoDao = AppDatabase.getDatabase(application).tipoEventoDao()
-
-    val lembretes: LiveData<List<Lembrete>> = liveData {
-        val data = lembreteDao.getAllLembretes()
-        emit(data)
+    init {
+        val lembreteDao = AppDatabase.getDatabase(application).lembreteDao()
+        repository = LembreteRepository(lembreteDao)
+        allLembretes = repository.allLembretes.asLiveData()
     }
 
-    fun addLembrete(lembrete: Lembrete) {
-        viewModelScope.launch {
-            lembreteDao.insertLembrete(lembrete)
-        }
+    fun insert(lembrete: Lembrete) = viewModelScope.launch {
+        repository.insert(lembrete)
     }
 
-    fun updateLembrete(lembrete: Lembrete) {
-        viewModelScope.launch {
-            lembreteDao.updateLembrete(lembrete)
-        }
+    fun update(lembrete: Lembrete) = viewModelScope.launch {
+        repository.update(lembrete)
     }
 
-    fun deleteLembrete(lembrete: Lembrete) {
-        viewModelScope.launch {
-            lembreteDao.deleteLembrete(lembrete)
-        }
+    fun delete(lembrete: Lembrete) = viewModelScope.launch {
+        repository.delete(lembrete)
     }
 }

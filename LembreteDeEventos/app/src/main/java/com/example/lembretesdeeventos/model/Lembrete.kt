@@ -7,6 +7,3 @@ data class Lembrete(
     val nota: String?,
     @ColumnInfo(name = "tipo_evento_id") val tipoEventoId: Int
 )
-
-
-
