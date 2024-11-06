@@ -25,13 +25,12 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private val apiKey = "Z797txCja7giQAwJKzRMY6AHGLbgMqHX" // Insira sua API Key do Calendarific aqui
+    private val apiKey = "Z797txCja7giQAwJKzRMY6AHGLbgMqHX"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Exemplo: obtendo feriados no Brasil para o ano atual
         RetrofitInstance.api.getFeriados(apiKey, "BR", 2024).enqueue(object : Callback<HolidayResponse> {
             override fun onResponse(call: Call<HolidayResponse>, response: Response<HolidayResponse>) {
                 if (response.isSuccessful) {
@@ -80,7 +79,6 @@ fun LembreteScreen(viewModel: LembreteViewModel) {
         }
 
         Button(onClick = {
-            // Ação de criar lembrete
         }) {
             Text(text = "Adicionar Lembrete")
         }
