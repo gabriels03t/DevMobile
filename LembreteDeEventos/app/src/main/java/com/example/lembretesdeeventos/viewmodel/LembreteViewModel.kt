@@ -1,22 +1,19 @@
-class LembreteViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: LembreteRepository
-    val allLembretes: LiveData<List<Lembrete>>
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-    init {
-        val lembreteDao = AppDatabase.getDatabase(application).lembreteDao()
-        repository = LembreteRepository(lembreteDao)
-        allLembretes = repository.allLembretes.asLiveData()
+class LembreteViewModel : ViewModel() {
+    private val _lembretes = MutableStateFlow<List<Lembrete>>(emptyList())
+    val lembretes: StateFlow<List<Lembrete>> = _lembretes.asStateFlow()
+
+    // Função para deletar um lembrete
+    fun delete(lembrete: Lembrete) {
+        _lembretes.value = _lembretes.value - lembrete
     }
 
-    fun insert(lembrete: Lembrete) = viewModelScope.launch {
-        repository.insert(lembrete)
-    }
-
-    fun update(lembrete: Lembrete) = viewModelScope.launch {
-        repository.update(lembrete)
-    }
-
-    fun delete(lembrete: Lembrete) = viewModelScope.launch {
-        repository.delete(lembrete)
+    // Outras funções para adicionar/editar lembretes
+    fun addLembrete(lembrete: Lembrete) {
+        _lembretes.value = _lembretes.value + lembrete
     }
 }

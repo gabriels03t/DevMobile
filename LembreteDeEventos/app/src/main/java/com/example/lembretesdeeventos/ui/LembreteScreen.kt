@@ -2,9 +2,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,7 +20,8 @@ fun LembreteScreen(
     onAddLembrete: () -> Unit,
     onEditLembrete: (Lembrete) -> Unit
 ) {
-    val lembretes by lembreteViewModel.lembretes.collectAsState(initial = emptyList())
+    // Usa collectAsState para observar o StateFlow dos lembretes
+    val lembretes by lembreteViewModel.lembretes.collectAsState()
 
     Scaffold(
         topBar = {
@@ -32,12 +38,13 @@ fun LembreteScreen(
             LembreteList(
                 lembretes = lembretes,
                 onEditLembrete = onEditLembrete,
-                onDeleteLembrete = { lembrete -> lembreteViewModel.deleteLembrete(lembrete) }, 
+                onDeleteLembrete = { lembrete -> lembreteViewModel.delete(lembrete) },
                 modifier = Modifier.padding(padding)
             )
         }
     )
 }
+
 
 @Composable
 fun LembreteList(

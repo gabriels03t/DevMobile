@@ -1,3 +1,5 @@
+import kotlinx.coroutines.flow.Flow
+
 class LembreteRepository(private val lembreteDao: LembreteDao) {
     val allLembretes: Flow<List<Lembrete>> = lembreteDao.getAllLembretes()
 

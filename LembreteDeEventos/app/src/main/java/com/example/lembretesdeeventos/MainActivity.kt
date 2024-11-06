@@ -1,35 +1,43 @@
 package com.example.lembretesdeeventos
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.lembretesdeeventos.ui.theme.LembretesDeEventosTheme
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import androidx.appcompat.app.AppCompatActivity
+import Lembrete
+import LembreteViewModel
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.seuprojeto.network.RetrofitInstance
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lembretesdeeventos.ui.theme.LembretesDeEventosTheme
+import com.seuprojeto.network.ApiService
 import com.seuprojeto.network.HolidayResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private val apiKey = "Z797txCja7giQAwJKzRMY6AHGLbgMqHX"
+    private val lembreteViewModel: LembreteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        setContent {
+            LembretesDeEventosTheme {
+                LembreteScreen(viewModel = lembreteViewModel)
+            }
+        }
 
         RetrofitInstance.api.getFeriados(apiKey, "BR", 2024).enqueue(object : Callback<HolidayResponse> {
             override fun onResponse(call: Call<HolidayResponse>, response: Response<HolidayResponse>) {
@@ -50,26 +58,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LembretesDeEventosTheme {
-        Greeting("Android")
-    }
-}
-
 @Composable
 fun LembreteScreen(viewModel: LembreteViewModel) {
-    val lembretes by viewModel.lembretes.observeAsState(listOf())
+    // Usa collectAsState para obter o estado dos lembretes
+    val lembretes by viewModel.lembretes.collectAsState()
 
     Column {
         lembretes.forEach { lembrete ->
@@ -79,6 +71,7 @@ fun LembreteScreen(viewModel: LembreteViewModel) {
         }
 
         Button(onClick = {
+            // Lógica para adicionar lembrete
         }) {
             Text(text = "Adicionar Lembrete")
         }
@@ -107,3 +100,5 @@ object RetrofitInstance {
             .create(ApiService::class.java)
     }
 }
+
+

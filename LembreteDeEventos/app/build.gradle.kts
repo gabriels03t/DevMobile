@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt") // Adiciona o plugin kapt
 }
 
+
 android {
     namespace = "com.example.lembretesdeeventos"
     compileSdk = 34
@@ -64,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,6 +73,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 
     // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.0.0")
@@ -90,4 +93,9 @@ dependencies {
 
     // Core KTX
     implementation("androidx.core:core-ktx:1.6.0")
+
+    implementation ("androidx.room:room-runtime:2.5.0") // ou a versão mais recente
+    kapt ("androidx.room:room-compiler:2.5.0") // ou a versão mais recente
+
+
 }
